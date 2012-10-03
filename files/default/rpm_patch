@@ -1,0 +1,45 @@
+Index: rpm_rules.mk
+===================================================================
+--- rpm_rules.mk	(revision 64523)
++++ rpm_rules.mk	(working copy)
+@@ -20,6 +20,14 @@
+ RPMEVAL             = $(RPM) --eval
+ TAR                 = tar
+ 
++ifneq ($(SVNUSER),)
++svnuser			= --username=$(SVNUSER)
++endif
++
++ifneq ($(SVNPASSWORD),)
++svnpassword			= --password=$(SVNPASSWORD)
++endif
++
+ #=========================================================================
+ # Some useful globals.
+ #=========================================================================
+@@ -81,7 +89,7 @@
+ #-------------------------------------------------------------------------
+ default_src  = .
+ src      ?= $(default_src)
+-svn_rev  := $(shell $(SVN) info   $(default_src) 2>/dev/null | $(GREP) "Last Changed Rev" | $(CUT) -d" " -f4)
++svn_rev  := $(shell $(SVN) $(svnuser) $(svnpassword) $(SVNARGS) info   $(default_src) 2>/dev/null | $(GREP) "Last Changed Rev" | $(CUT) -d" " -f4)
+ git_rev  := $(shell $(GIT) log -1 $(default_src) 2>/dev/null | $(HEAD) -1 | $(CUT) -d" " -f2 | $(CUT) -c1-6 )
+ ifneq ($(svn_rev),)
+ scm_rev  := $(svn_rev)
+@@ -447,14 +455,14 @@
+ 			theDestdir=$${_theDestdir}/$${theSubdir} ;\
+ 			if [ -d "$${theDestdir}/.svn" ];then \
+ 				echo "Updating $${theDestdir}" ;\
+-				if ! $(SVN) --quiet update $${theDestdir} ; then \
++				if ! $(SVN) $(svnuser) $(svnpassword) $(SVNARGS) --quiet update $${theDestdir} ; then \
+ 					echo "Error during svn update:" ;\
+ 					echo "   $(SVN) update $${theDestdir}" ;\
+ 					exit 1 ;\
+ 				fi ;\
+ 			else \
+ 				echo "Checking out $${theUrl} to $${theDestdir}" ;\
+-				if ! $(SVN) --quiet checkout $${theUrl} $${theDestdir} ; then \
++				if ! $(SVN) $(svnuser) $(svnpassword) $(SVNARGS) --quiet checkout $${theUrl} $${theDestdir} ; then \
+ 					echo "Error: Failed $(SVN) checkout $${theUrl} $${theDestdir}" ;\
+ 					exit 1 ;\
+ 				fi ;\

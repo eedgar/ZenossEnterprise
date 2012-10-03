@@ -1,0 +1,2 @@
+
+knife data bag from file BAG_NAME /path/to/file
