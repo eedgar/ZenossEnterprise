@@ -64,13 +64,28 @@ case node[:platform]
            include_recipe "build-essential"
 
            managed_packages = %w{libsasl2-dev libldap2-dev libxslt-dev librrd-dev libaio-dev build-essential}
-           managed_packages += %w{libpango1.0-dev libreadline-dev}
-           managed_packages += %w{libmysqlclient-dev libreadline-dev libssl-dev swig}
+           managed_packages += %w{libpango1.0-dev libreadline-dev libsnmp-dev libssl-dev unzip zip}
+           managed_packages += %w{libmysqlclient-dev libreadline-dev libssl-dev swig autoconf bc}
 
            # Install the dependencies
            managed_packages.each do |pkg|
               package pkg
            end
+           
+           managed_packages = %w{mysql-server-5.5}
+           managed_services = %w{mysql}
+
+           # Install mysql server and the development packages
+           managed_packages.each do |pkg|
+               package pkg
+           end
+
+           # Start the mysql server
+           managed_services.each do |svc|
+              service svc do
+                action [ :enable, :start ]
+               end
+          end
 end
 
 include_recipe "java"

@@ -19,6 +19,7 @@ are not yet accepted upstream.  Watch for version conflicts if you are
 using any of these repos.
 
 ant
+maven
 java
 jpackage
 rabbitmq

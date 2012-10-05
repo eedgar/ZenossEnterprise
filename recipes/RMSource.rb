@@ -65,8 +65,9 @@ execute "deploy zenoss" do
 end
 
 execute "setuid files" do
-   command "chown root:zenoss /home/zenoss/zenosstrunk/bin/{pyraw,zensocket,nmap}; chmod 04750 /home/zenoss/zenosstrunk/bin/{pyraw,zensocket,nmap}"
-   user "zenoss"
+   command "chown root:zenoss pyraw;chown root:zenoss zensocket;chown root:zenoss nmap;chmod 04750 pyraw;chmod 04750 zensocket;chmod 04750 nmap"
+   cwd '/home/zenoss/zenosstrunk/bin'
+   user "root"
    action :run
 end
 

@@ -165,8 +165,29 @@ case node[:platform]
 #          action :install
 #        end
     when "ubuntu"
-        managed_packages = %w{libsasl2-2 sasl2-bin rrdtool librrd4 sysstat libaio1}
-        managed_packages += %w{unzip zip libreadline5 libssl0.9.8 ssh libsnmp-base libsnmp15} 
+
+        # Work around a bug in rrdcached 
+        # Create /var/lib/rrdcached/{journal,db}
+        directory "/var/lib/rrdcached/journal" do
+           owner "root"
+           group "root"
+           action :create
+           recursive true
+           not_if "test -d /var/lib/rrdcached/journal"
+        end
+
+        directory "/var/lib/rrdcached/db" do
+           owner "root"
+           group "root"
+           action :create
+           recursive true
+           not_if "test -d /var/lib/rrdcached/db"
+        end
+
+
+
+        managed_packages = %w{libsasl2-2 sasl2-bin rrdtool rrdcached librrd4 sysstat libaio1}
+        managed_packages += %w{unzip zip libreadline5 libssl0.9.8 ssh libsnmp-base libsnmp15 nagios-plugins-standard} 
 
         # Install the dependencies
         managed_packages.each do |pkg|
