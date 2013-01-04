@@ -98,7 +98,7 @@ case node[:platform]
         #
         
         yum_repository "zenoss-dependancies" do
-            description "zenoss dependancies""
+            description "zenoss dependancies"
             url "http://deps.zenoss.com/yum/zenossdeps-4.2.x-1.el5.noarch.rpm"
             enabled "1"
             action :add
