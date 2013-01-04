@@ -25,6 +25,9 @@ case node[:platform]
            managed_packages += %w{openssl-devel openldap-devel pcre-devel net-snmp-devel zlib-devel}
            managed_packages += %w{automake bc unzip zip patch swig bison gdb libtool}
            managed_packages += %w{bash pcre-devel openldap-devel net-snmp-utils rrdtool-devel}
+          
+           #This is a nice to have if you prefer to work in git 
+           managed_packages += %w{git-svn}
 
            # Install the dependencies
            managed_packages.each do |pkg|

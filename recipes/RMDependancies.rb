@@ -82,14 +82,14 @@ case node[:platform]
         
         #Zenoss 4.2
         #include_recipe "yum::repoforge"
-        yum_repository "rpmforge-extras" do
-            description "RPMforge.net - extras"
-            url "http://apt.sw.be/redhat/el#{major}/en/$basearch/extras"
-            mirrorlist "http://apt.sw.be/redhat/el#{major}/en/mirrors-rpmforge-extras"
-            enabled "1"
-            includepkgs "rrdtool,perl-rrdtool, rrdtool-devel"
-            action :add
-        end
+        #yum_repository "rpmforge-extras" do
+        #    description "RPMforge.net - extras"
+        #    url "http://apt.sw.be/redhat/el#{major}/en/$basearch/extras"
+        #    mirrorlist "http://apt.sw.be/redhat/el#{major}/en/mirrors-rpmforge-extras"
+        #    enabled "1"
+        #    includepkgs "rrdtool,perl-rrdtool, rrdtool-devel"
+        #    action :add
+        #end
 
         managed_packages += %w{xorg-x11-fonts-Type1 ruby libdbi mysqltuner sysstat rrdtool}
         # zenoss
@@ -97,6 +97,14 @@ case node[:platform]
         # zenpacks
         #
         
+        yum_repository "zenoss-dependancies" do
+            description "zenoss dependancies""
+            url "http://deps.zenoss.com/yum/zenossdeps-4.2.x-1.el5.noarch.rpm"
+            enabled "1"
+            action :add
+        end
+
+        managed_packages += %w{xorg-x11-fonts-Type1 ruby libdbi mysqltuner sysstat rrdtool}
 
 
         # Install the dependencies
