@@ -91,8 +91,7 @@ case node[:platform]
         #    action :add
         #end
 
-        managed_packages += %w{xorg-x11-fonts-Type1 ruby libdbi mysqltuner sysstat rrdtool}
-        managed_packages += %w{xorg-x11-fonts-Type1 ruby libdbi mysqltuner sysstat rrdtool}
+        managed_packages += %w{xorg-x11-fonts-Type1 ruby libdbi sysstat rrdtool}
         
         url="http://deps.zenoss.com/yum/zenossdeps-4.2.x-1.el6.noarch.rpm"
         filename = url.split('/')[-1]
@@ -121,59 +120,6 @@ case node[:platform]
             end
         end
 
-#        include_recipe "zends::server_rpmonly"
-
-#        filename = node['RM'][centos_version][rpm_arch]['url'].split('/')[-1]
-#        localfile = "#{Chef::Config[:file_cache_path]}/#{filename}"
-#        remote_file "#{localfile}" do
-#          source node['RM'][centos_version][rpm_arch]['url']
-#          action :create_if_missing
-#        end
-#        rpm_package "#{localfile}" do
-#          options "--nodeps" 
-#          action :install
-#        end
-
-        # Update the global.conf on 4.1.1+
-#        if zenoss_version > '4.1.1'
-#            template "/opt/zenoss/etc/global.conf" do
-#                source 'global.conf.erb'
-#                owner 'zenoss'
-#                group 'zenoss'
-#                mode "0644"
-#            end
-#        end
-        
-#        service "zenoss" do
-#            start_command "/etc/init.d/zenoss start"
-#            stop_command "/etc/init.d/zenoss stop"
-#            supports :status => true, :restart => true, :reload => false
-#            action [ :enable, :start ]
-#        end
-
-#        core_zenpacks_filename = node['RM'][centos_version][rpm_arch]['core_zenpacks']['url'].split('/')[-1]
-#        enterprise_zenpacks_filename = node['RM'][centos_version][rpm_arch]['enterprise_zenpacks']['url'].split('/')[-1]
-
-#        core_zenpacks_localfile = "#{Chef::Config[:file_cache_path]}/#{core_zenpacks_filename}"
-#        enterprise_zenpacks_localfile = "#{Chef::Config[:file_cache_path]}/#{enterprise_zenpacks_filename}"
-        
-#        remote_file "#{core_zenpacks_localfile}" do
-#          source node['RM'][centos_version][rpm_arch]['core_zenpacks']['url']
-#          action :create_if_missing
-#        end
-#
-#        remote_file "#{enterprise_zenpacks_localfile}" do
-#          source node['RM'][centos_version][rpm_arch]['enterprise_zenpacks']['url']
-#          action :create_if_missing
-#        end
-
-#        rpm_package "#{core_zenpacks_localfile}" do
-#          action :install
-#        end
-
-#        rpm_package "#{enterprise_zenpacks_localfile}" do
-#          action :install
-#        end
     when "ubuntu"
 
         # Work around a bug in rrdcached 
