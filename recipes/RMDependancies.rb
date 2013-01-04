@@ -94,10 +94,20 @@ case node[:platform]
         managed_packages += %w{xorg-x11-fonts-Type1 ruby libdbi mysqltuner sysstat rrdtool}
         managed_packages += %w{xorg-x11-fonts-Type1 ruby libdbi mysqltuner sysstat rrdtool}
         
-        yum_package "http://deps.zenoss.com/yum/zenossdeps-4.2.x-1.el6.noarch.rpm" do
-            action :install
-            flush_cache [ :after ]
+        url="http://deps.zenoss.com/yum/zenossdeps-4.2.x-1.el6.noarch.rpm"
+        filename = url.split('/')[-1]
+        localfile = "#{Chef::Config[:file_cache_path]}/#{filename}"
+        remote_file "#{localfile}" do
+            source url
+            action :create_if_missing
         end
+
+        rpm_package "#{localfile}" do
+            options "--nodeps"
+            action :install
+        end
+
+
 
         # Install the dependencies
         managed_packages.each do |pkg|
