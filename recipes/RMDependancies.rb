@@ -99,7 +99,7 @@ case node[:platform]
         
         yum_repository "zenoss-dependancies" do
             description "zenoss dependancies"
-            url "http://deps.zenoss.com/yum/zenossdeps-4.2.x-1.el5.noarch.rpm"
+            url "http://deps.zenoss.com/yum/4.2.x/centos/6/os/x86_64/"
             enabled "1"
             action :add
         end
