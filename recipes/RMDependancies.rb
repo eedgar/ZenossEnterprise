@@ -92,20 +92,12 @@ case node[:platform]
         #end
 
         managed_packages += %w{xorg-x11-fonts-Type1 ruby libdbi mysqltuner sysstat rrdtool}
-        # zenoss
-        # zenoss patches
-        # zenpacks
-        #
-        
-        yum_repository "zenoss-dependancies" do
-            description "zenoss dependancies"
-            url "http://deps.zenoss.com/yum/4.2.x/centos/6/os/x86_64/"
-            enabled "1"
-            action :add
-        end
-
         managed_packages += %w{xorg-x11-fonts-Type1 ruby libdbi mysqltuner sysstat rrdtool}
-
+        
+        yum_package "http://deps.zenoss.com/yum/zenossdeps-4.2.x-1.el6.noarch.rpm" do
+            action :install
+            flush_cache [ :after ]
+        end
 
         # Install the dependencies
         managed_packages.each do |pkg|
