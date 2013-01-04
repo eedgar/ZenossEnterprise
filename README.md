@@ -1,3 +1,5 @@
+This cookbook is gpl2 software.
+
 Description
 ===========
 
