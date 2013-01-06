@@ -8,6 +8,13 @@
 
 include_recipe "ZenossEnterprise::RMDependancies"
 include_recipe "erlang"
+ruby_block "reload-internal-yum-cache" do
+    block do
+        Chef::Provider::Package::Yum::YumCache.instance.reload
+    end
+    action :nothing
+end
+
 include_recipe "rabbitmq"
 
 case node[:platform]
