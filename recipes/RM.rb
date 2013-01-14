@@ -68,44 +68,18 @@ case node[:platform]
             action [ :enable, :start ]
         end
 
-        core_zenpacks_filename = node['RM'][centos_version][rpm_arch]['core_zenpacks']['url'].split('/')[-1]
-        enterprise_zenpacks_filename = node['RM'][centos_version][rpm_arch]['enterprise_zenpacks']['url'].split('/')[-1]
-
-        core_zenpacks_localfile = "#{Chef::Config[:file_cache_path]}/#{core_zenpacks_filename}"
-        enterprise_zenpacks_localfile = "#{Chef::Config[:file_cache_path]}/#{enterprise_zenpacks_filename}"
-
-        remote_file "#{core_zenpacks_localfile}" do
-          source node['RM'][centos_version][rpm_arch]['core_zenpacks']['url']
-          action :create_if_missing
+        node["RM"]["server"]["zenpacks"].each do |url, ahash|
+            #package__zp_version.sort_by { |package, zpversion| package }.each do |package, zpversion|
+            ahash.each do |data|
+                data.each do |package,zpversion|
+                  ZenossEnterprise_zenpack "#{package}" do
+                    version zpversion
+                    base_url url
+                    action :install
+                    notifies :restart, resources(:service => "zenoss")
+                  end
+                end
+            end
         end
-
-        remote_file "#{enterprise_zenpacks_localfile}" do
-          source node['RM'][centos_version][rpm_arch]['enterprise_zenpacks']['url']
-          action :create_if_missing
-        end
-
-        rpm_package "#{core_zenpacks_localfile}" do
-          action :install
-        end
-
-        rpm_package "#{enterprise_zenpacks_localfile}" do
-          action :install
-        end
+        service "zenoss"
     end
-
-
-
-
-
-
-#https://github.com/opscode/chef/blob/master/chef/lib/chef/util/file_edit.rb
-#ruby_block "edit resolv conf" do
-#  block do
-#    rc = Chef::Util::FileEdit.new("/etc/resolv.conf")
-#    rc.search_file_replace_line(/^search/, "search #{node["dynect"]["domain"]} compute-1.internal")
-#    rc.search_file_replace_line(/^domain/, "domain #{node["dynect"]["domain"]}")
-#    rc.write_file
-#  end
-#end
-#/opt/zenoss/.fresh_install
-#/opt/zenoss/.upgraded
