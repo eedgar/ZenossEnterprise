@@ -1,11 +1,11 @@
 zodb-db-type mysql
-zodb-host 127.0.0.1
-zodb-port 13306
-zodb-db zodb
-zodb-user zenoss
-zodb-password zenoss
-zodb-admin-user root
-zodb-admin-password Zenoss1
+zodb-host <%= node['RM']['ZODBHOST'] %>
+zodb-port <%= node['RM']['ZODBPORT'] %>
+zodb-db <%= node['RM']['ZODBDB'] %>
+zodb-user <%= node['RM']['ZODBUSER'] %>
+zodb-password <%= node['RM']['ZODBPASSWORD'] %>
+zodb-admin-user <%= node['RM']['ZODBADMINUSER'] %>
+zodb-admin-password <%= node['RM']['ZODBADMINPASSWORD'] %>
 zodb-cacheservers 127.0.0.1:11211
 zodb-cachesize 1000
 
@@ -19,11 +19,11 @@ amqpadminport 55672
 amqpadminusessl 0
 
 zep-db-type mysql
-zep-host 127.0.0.1
-zep-port 13306
-zep-db zenoss_zep
-zep-user zenoss
-zep-password zenoss
-zep-admin-user root
-zep-admin-password Zenoss1
+zep-host <%= node['RM']['ZEPHOST'] %>
+zep-port <%= node['RM']['ZEPPORT'] %>
+zep-db <%= node['RM']['ZEPDB'] %>
+zep-user <%= node['RM']['ZEPUSER'] %>
+zep-password <%= node['RM']['ZEPPASSWORD'] %>
+zep-admin-user <%= node['RM']['ZEPADMINUSER'] %>
+zep-admin-password <%= node['RM']['ZEPADMINPASSWORD'] %>
 zep-uri http://localhost:8084
