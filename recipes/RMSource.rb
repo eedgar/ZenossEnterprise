@@ -44,10 +44,20 @@ execute "make zenoss" do
    action :run
 end
 
-execute "configure rabbitmq" do
-    command "/usr/sbin/rabbitmqctl add_user zenoss zenoss;/usr/sbin/rabbitmqctl add_vhost /zenoss;/usr/sbin/rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'"
-    user "root"
-    action :run
+# add a zenoss vhost to the queue
+execute "rabbitmqctl add_vhost /zenoss" do
+  not_if "rabbitmqctl list_vhosts| grep /zenoss"
+end
+
+# create zenoss user for the queue
+execute "rabbitmqctl add_user zenoss zenoss" do
+  not_if "rabbitmqctl list_users |grep zenoss"
+end
+
+# grant the mapper user the ability to do anything with the /zenoss vhost
+# the three regex's map to config, write, read permissions respectively
+execute 'rabbitmqctl set_permissions -p /zenoss zenoss ".*" ".*" ".*"' do
+  not_if 'rabbitmqctl list_user_permissions zenoss|grep /zenoss'
 end
 
 execute "deploy zenoss" do
